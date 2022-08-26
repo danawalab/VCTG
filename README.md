@@ -32,3 +32,46 @@ Port: 7878
 branch - server
 - 클라이언트
 branch - client
+
+
+## 데이터베이스 테이블 생성 쿼리
+
+```sql
+CREATE TABLE `USERS` (
+`user_id` varchar(20) NOT NULL AUTO_INCREMENT,
+`point` int(20),
+`wallet_address` varchar(350) NOT NULL,
+PRIMARY KEY (`user_id`)
+)
+
+CREATE TABLE `WALLETS` (
+`wallet_id` int(11) NOT NULL AUTO_INCREMENT,
+`user_id` varchar(20) NOT NULL,
+`wallet_address` varchar(36) NOT NULL,
+PRIMARY KEY (`wallet_id`)
+)
+
+CREATE TABLE `COINS` (
+`coin_id` int(11) NOT NULL AUTO_INCREMENT,
+`wallet_address` varchar(350) NOT NULL,
+`coin_address` varchar(350) NOT NULL,
+PRIMARY KEY (`coin_id`)
+)
+
+CREATE TABLE `CONTRACTS` (
+`contract_id` int(11) NOT NULL AUTO_INCREMENT,
+`seller_id` int(20) NOT NULL,
+`buyer_id` int(30) NOT NULL,
+`coin_address` varchar(350) NOT NULL,
+`point` int(11),
+PRIMARY KEY (`contract_id`)
+)
+
+CREATE TABLE `SELL_COINS` (
+`sell_coin_id` int(11) NOT NULL AUTO_INCREMENT,
+`coin_address` varchar(350) NOT NULL,
+`point` int(30) NOT NULL,
+`seller_id` int(64) NOT NULL,
+PRIMARY KEY (`sell_coin_id`)
+)
+```
