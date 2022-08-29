@@ -75,3 +75,10 @@ CREATE TABLE `SELL_COINS` (
 PRIMARY KEY (`sell_coin_id`)
 )
 ```
+## 클라이언트 - 서버 간 통신 시 (전부 영문자, 그리고 문자열로 통신한다.)
+### 유저 등록 시
+- register|<유저아이디>
+### 채굴 시 확인
+- mining|<유저아이디>|is_ok
+### 지갑 확인
+- wallet|<유저아이디>
