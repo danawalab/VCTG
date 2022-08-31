@@ -60,5 +60,4 @@ mod tests {
         assert_eq!(user.point, 100);
         assert_eq!(user.wallet_address, "123".to_string());
     }
-
 }
