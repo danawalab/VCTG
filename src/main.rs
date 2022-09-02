@@ -36,23 +36,8 @@ fn main() {
             println!("You selected Sell Coin");
         } else if guess.trim()=="6" {
             println!("You selected Buy Coin");
-        }
+        } // TODO : TCP 연결 체크
 
-
-        //
-        // let guess: u32 = match guess.trim().parse() {
-        //     Ok(num) => num,
-        //     Err(_) => continue,
-        // }; // trim -> 개행문자 빼기 / parse -> 정수형으로 변환 / _ -> 모든 값과 매칭 됨
-        //
-        //
-        // println!("You guessed: {}", guess);
-        //
-        // match guess.cmp(&secret_number) {
-        //     Ordering::Less    => println!("Too small!"),
-        //     Ordering::Greater => println!("Too big!"),
-        //     Ordering::Equal   => { println!("You win!"); break; }
-        // }
     }
 
 }
