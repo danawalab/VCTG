@@ -9,7 +9,7 @@ impl Wallet {
         let wallet = Wallet {
             wallet_id: user_id,
             user_id,
-            wallet_address: "123".to_string(),
+            wallet_address: "123".to_string(), //todo 랜덤 주소 구현
         };
         wallet.wallet_address
     }
