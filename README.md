@@ -11,8 +11,9 @@ mysql  == 22.2.0 (https://docs.rs/mysql/latest/mysql/)
 
 ## 개발 시 필요 내용
 - RDBMS(maria) - 도커로 실행(docker pull mariadb:10.9.2)
-  docker run -d --name mariadb -p 3306:3306 --env MARIADB_USER=user --env MARIADB_PASSWORD=password --env MARIADB_ROOT_PASSWORD=root mariadb:10.9.2
-  docker exec -it mariadb
+docker run -d --name mariadb -p 3306:3306 --env MARIADB_USER=user --env MARIADB_PASSWORD=password --env MARIADB_ROOT_PASSWORD=root mariadb:10.9.2
+docker exec -it mariadb
+
 
 ### 유저 계정으로 DB 접근
 mysql -u user -p
@@ -45,7 +46,7 @@ flush privileges;
   Port: 7878
   branch - server
 - 클라이언트
-  branch - client
+branch - client
 
 ## 데이터베이스 테이블 생성 쿼리
 ```sql
