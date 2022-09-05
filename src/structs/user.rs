@@ -24,6 +24,9 @@ impl User {
     }
 }
 
+fn exists_user_name(user_name: String) -> bool {
+    false
+}
 
 #[cfg(test)]
 mod tests {
