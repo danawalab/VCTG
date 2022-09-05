@@ -1,16 +1,28 @@
 use std::io;
+use tokio::net::TcpStream;
+use tokio::prelude::*;
 
-fn main() {
+#[tokio::main]
+async fn main() {
+    println!("test stream");
 
-    println!("=============== WELCOME TO VCTG ===============");
+    let mut stream = TcpStream::connect("192.168.0.105:7878").await.unwrap();
+    println!("created stream");
+
+    let result = stream.write(b"register|helloworld").await;
+    println!("wrote to stream {:?}", result);
+    println!("wrote to stream; success={:?}", result.is_ok());
+
+    println!("==================== WELCOME TO VCTG ====================");
     loop {
-        println!("Select Action (Press Q or q to quit)");
+        println!("---------- Select Action (Press Q or q to quit) ----------");
         println!("[1] Register VCTG");
         println!("[2] Sign In VCTG");
         println!("[3] Check Wallet");
         println!("[4] Mine Coin");
         println!("[5] Sell Coin");
         println!("[6] Buy Coin");
+        println!("----------------------------------------------------------");
 
         let mut guess = String::new(); // new 함수는 새로운 빈 String을 생성합니다
         // 이 라인은 새로운 빈 String 인스턴스와 연결된 가변변수를 생성합니다.
