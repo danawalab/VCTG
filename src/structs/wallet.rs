@@ -19,11 +19,11 @@ impl Wallet {
         };
         wallet.wallet_address
     }
+
+    pub fn get_coins(wallet_address: String) {
+        todo!()
+    }
 }
-
-todo!(
-
-);
 
 #[cfg(test)]
 mod tests {

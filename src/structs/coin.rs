@@ -1,6 +1,7 @@
 use crate::common::generate_address::generate_address;
 
 const COIN_ADDRESS_PREFIX: &str = "cin_";
+const COIN_MINING_CAPACITY: i32 = 100;
 
 pub struct Coin {
     pub coin_address: String,
@@ -17,6 +18,10 @@ impl Coin {
             wallet_address,
         }
     }
+}
+
+fn get_coin_amount_of_mining() -> bool {
+    todo!()
 }
 
 todo!(
