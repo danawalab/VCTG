@@ -1,3 +1,7 @@
+use crate::common::generate_address::generate_address;
+
+const COIN_ADDRESS_PREFIX: &str = "cin_";
+
 pub struct Coin {
     pub coin_address: String,
     pub wallet_address: String,
@@ -5,8 +9,11 @@ pub struct Coin {
 
 impl Coin {
     pub fn new(wallet_address: String) -> Coin {
+        let mut coin_address: String = COIN_ADDRESS_PREFIX.to_string();
+        coin_address.push_str(&*generate_address());
+
         Coin {
-            coin_address: "123".to_string(), //todo 랜덤 주소 구현
+            coin_address,
             wallet_address,
         }
     }
