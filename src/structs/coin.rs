@@ -19,6 +19,12 @@ impl Coin {
     }
 }
 
+todo!(
+    코인 db 등록,
+    채굴량 100개시 코인 채굴 X,
+    코인 채굴량 반환,
+);
+
 #[cfg(test)]
 mod tests {
     use crate::structs::coin::Coin;

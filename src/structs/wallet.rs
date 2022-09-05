@@ -21,6 +21,10 @@ impl Wallet {
     }
 }
 
+todo!(
+
+);
+
 #[cfg(test)]
 mod tests {
     use crate::common::generate_address::generate_address;
