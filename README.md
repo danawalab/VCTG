@@ -51,22 +51,21 @@ branch - client
 ```sql
 CREATE TABLE USERS (
 user_id int NOT NULL AUTO_INCREMENT,
+user_name varchar(36) NOT NULL,
 point int,
 wallet_address varchar(350) NOT NULL,
 PRIMARY KEY (user_id)
 );
 
 CREATE TABLE WALLETS (
-wallet_id int NOT NULL AUTO_INCREMENT,
-user_id int NOT NULL,
 wallet_address varchar(36) NOT NULL,
-PRIMARY KEY (wallet_id)
+user_id varchar(36) NOT NULL,
+PRIMARY KEY (wallet_address)
 );
 
 CREATE TABLE COINS (
-coin_id int NOT NULL AUTO_INCREMENT,
-wallet_address varchar(36) NOT NULL,
 coin_address varchar(36) NOT NULL,
+wallet_address varchar(36) NOT NULL,
 PRIMARY KEY ( coin_id )
 );
 
@@ -89,9 +88,15 @@ PRIMARY KEY (sell_coin_id)
 ```
 
 ## 클라이언트 - 서버 간 통신 시 (전부 영문자, 그리고 문자열로 통신한다.)
-### 유저 등록 시
-- register|<유저아이디>|
-### 채굴 시 확인
-- mining|<유저아이디>|is_ok|
-### 지갑 확인
-- wallet|<유저아이디>|
+
+### client to Server
+#### 유저 등록 시 
+- request => register|<유저아이디>|
+- response => OK|<message>| 혹은 FAIL|<message>| 
+#### 채굴 시 확인
+- request => mining|<유저아이디>|
+- response => OK|<message>|<coin address>| 혹은 FAIL|<message>|
+#### 지갑 확인
+- request => wallet|<유저아이디>|
+- response => OK|<message>|<coin address1>|<coin address2>| 혹은 FAIL|<message>|
+
