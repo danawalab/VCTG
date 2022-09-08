@@ -96,3 +96,5 @@ PRIMARY KEY (sell_coin_id)
 - mining|<유저아이디>|is_ok|
 ### 지갑 확인
 - wallet|<유저아이디>|
+
+123
