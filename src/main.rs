@@ -1,20 +1,13 @@
 use std::io;
-use tokio::net::TcpStream;
-use tokio::prelude::*;
+use std::io::prelude::*;
+use std::net::TcpStream;
 
-#[tokio::main]
-async fn main() {
-    println!("test stream");
+const IP_ADDRESS: &str = "localhost:7878";
 
-    let mut stream = TcpStream::connect("192.168.0.105:7878").await.unwrap();
-    println!("created stream");
-
-    let result = stream.write(b"register|helloworld").await;
-    println!("wrote to stream {:?}", result);
-    println!("wrote to stream; success={:?}", result.is_ok());
-
+fn main() -> std::io::Result<()> {
     println!("==================== WELCOME TO VCTG ====================");
     loop {
+        let mut stream = TcpStream::connect(IP_ADDRESS)?;
         println!("---------- Select Action (Press Q or q to quit) ----------");
         println!("[1] Register VCTG");
         println!("[2] Sign In VCTG");
@@ -24,8 +17,7 @@ async fn main() {
         println!("[6] Buy Coin");
         println!("----------------------------------------------------------");
 
-        let mut guess = String::new(); // new 함수는 새로운 빈 String을 생성합니다
-        // 이 라인은 새로운 빈 String 인스턴스와 연결된 가변변수를 생성합니다.
+        let mut guess = String::new();
 
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
@@ -38,18 +30,38 @@ async fn main() {
 
         if guess.trim()=="1" {
             println!("You selected Register VCTG");
+            let writeBuffer = b"register|user|";
+            stream.write(writeBuffer)?;
+
+            let mut readBuffer = [0; 512];
+            stream.read(&mut readBuffer).unwrap();
+
+            println!("Response: {}", String::from_utf8_lossy(&readBuffer[..]));
         } else if guess.trim()=="2" {
             println!("You selected Sign In VCTG");
         } else if guess.trim()=="3" {
             println!("You selected Check Wallet");
+            let writeBuffer = b"wallet|user|";
+            stream.write(writeBuffer)?;
+
+            let mut readBuffer = [0; 512];
+            stream.read(&mut readBuffer).unwrap();
+
+            println!("Response: {}", String::from_utf8_lossy(&readBuffer[..]));
         } else if guess.trim()=="4" {
             println!("You selected Mine Coin");
+            let writeBuffer = b"mining|user|";
+            stream.write(writeBuffer)?;
+
+            let mut readBuffer = [0; 512];
+            stream.read(&mut readBuffer).unwrap();
+
+            println!("Response: {}", String::from_utf8_lossy(&readBuffer[..]));
         } else if guess.trim()=="5" {
             println!("You selected Sell Coin");
         } else if guess.trim()=="6" {
             println!("You selected Buy Coin");
         } // TODO : TCP 연결 체크
-
     }
-
+    Ok(())
 }
