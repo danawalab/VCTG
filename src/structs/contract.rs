@@ -15,6 +15,9 @@ impl Contract {
         coin_address: String,
         point: i32,
     ) -> Contract {
+        // db서 seller_id  조회 후 해당 유저는 point 증가, 코인 삭제
+        // db서 buyer_id 조회 후 해당 유저는 point 감소, 코인 추가
+
         Contract {
             contract_id: 0,
             sell_coin_id,
