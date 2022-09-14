@@ -1,68 +1,63 @@
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
-
 use mysql::*;
 use mysql::prelude::*;
 use crate::database::database::DataAccessStruct;
-
 mod database;
 
-// pub fn listening_for_loop() {
-//     let listener = TcpListener::bind("192.168.0.71:7878").unwrap();
-//
-//     for stream in listener.incoming() {
-//         let stream = stream.unwrap();
-//
-//         thread::spawn(|| {
-//             handle_connection(stream);
-//         });
-//     }
-// }
-//
-// pub fn handle_connection(mut stream: TcpStream) {
-//     let mut buffer = [0; 1024];
-//     // let mut buffer = String::new();
-//
-//     stream.read(&mut buffer).unwrap();
-//     let request = std::str::from_utf8(&buffer[..]).unwrap();
-//     let mut splited = request.split("|");
-//
-//     // let request: Vec<char> = String::from_utf8_lossy(&buffer[..]).to_mut().chars().collect();
-//     // println!("{} {}", splited.next().unwrap(), splited.next().unwrap());
-//     handle_request(stream, splited.next().unwrap(), splited.next().unwrap());
-// }
-//
-// pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str){
-//     // return 값은 OK 혹은 FAIL로만 준다
-//     // 각 값은 |로 구분 한다
-//     match route {
-//         "register" => {
-//             let response = "OK|register done|\r\n";
-//
-//             stream.write(response.as_bytes()).unwrap();
-//             stream.flush().unwrap();
-//         },
-//         "mining" => {
-//             let response = "OK|mining done|\r\n";
-//
-//             stream.write(response.as_bytes()).unwrap();
-//             stream.flush().unwrap();
-//         },
-//         "wallet" => {
-//             let response = "OK|wallet info returned|\r\n";
-//
-//             stream.write(response.as_bytes()).unwrap();
-//             stream.flush().unwrap();
-//         },
-//         _ => {
-//             let response = "FAIL|ROUTE_PATH is not found|\r\n";
-//
-//             stream.write(response.as_bytes()).unwrap();
-//             stream.flush().unwrap();
-//         }
-//     }
-// }
+const IP_ADDRESS: &str = "localhost:7878";
+
+pub fn listening_for_loop() {
+    let listener = TcpListener::bind(IP_ADDRESS).unwrap();
+
+    for stream in listener.incoming() {
+        println!("1. Main : listener.incoming()");
+        let stream = stream.unwrap();
+        handle_connection(stream);
+        println!("4. Main : after handle_client");
+    }
+}
+
+pub fn handle_connection(mut stream: TcpStream) {
+    println!("2. Begin handle_client");
+    let mut readBuffer = [0; 512];
+
+    stream.read(&mut readBuffer).unwrap();
+    println!("Request: {}", String::from_utf8_lossy(&readBuffer[..]));
+
+    let readBufferStr = std::str::from_utf8(&readBuffer[..]).unwrap();
+    let mut splited = readBufferStr.split("|");
+
+    handle_request(stream, splited.next().unwrap(), splited.next().unwrap());
+    println!("3. End handle_client");
+}
+
+pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str){
+    // return 값은 OK 혹은 FAIL로만 준다
+    // 각 값은 |로 구분 한다
+
+    println!("route: {} / user_name: {}", route, user_name);
+
+    match route {
+        "register" => {
+            let writeBuffer = b"OK|register done|\r\n";
+            stream.write(writeBuffer);
+        },
+        "mining" => {
+            let writeBuffer = b"OK|mining done|\r\n";
+            stream.write(writeBuffer);
+        },
+        "wallet" => {
+            let writeBuffer = b"OK|wallet info returned|\r\n";
+            stream.write(writeBuffer);
+        },
+        _ => {
+            let writeBuffer = b"FAIL|ROUTE_PATH is not found|\r\n";
+            stream.write(writeBuffer);
+        }
+    }
+}
 //
 // pub fn connect_to_db(){
 //     let url = "mysql://root:root@localhost:3306/test_db";
@@ -116,10 +111,10 @@ fn main() {
         database: String::from("test_db")
     };
 
-    let conn = dao.do_connect();
+    // let conn = dao.do_connect(); 에러나서 일단 주석처리
 
 
     // register_user_db("test_user");
     // connect_to_db();
-    // listening_for_loop();
+    listening_for_loop();
 }
