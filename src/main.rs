@@ -39,19 +39,32 @@ pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str){
     // return 값은 OK 혹은 FAIL로만 준다
     // 각 값은 |로 구분 한다
 
-    println!("route: {} / user_name: {}", route, user_name);
+    println!("route: {} / arg: {}", route, user_name);
 
     match route {
         "register" => {
             let writeBuffer = b"OK|register done|\r\n";
             stream.write(writeBuffer);
         },
+        "signin" => {
+            let writeBuffer = b"OK|signin done|\r\n";
+            stream.write(writeBuffer);
+        },
+
+        "wallet" => {
+            let writeBuffer = b"OK|wallet info returned|\r\n";
+            stream.write(writeBuffer);
+        },
         "mining" => {
             let writeBuffer = b"OK|mining done|\r\n";
             stream.write(writeBuffer);
         },
-        "wallet" => {
-            let writeBuffer = b"OK|wallet info returned|\r\n";
+        "sell" => {
+            let writeBuffer = b"OK|selling done|\r\n";
+            stream.write(writeBuffer);
+        },
+        "buy" => {
+            let writeBuffer = b"OK|buying done|\r\n";
             stream.write(writeBuffer);
         },
         _ => {
