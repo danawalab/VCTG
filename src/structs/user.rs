@@ -29,6 +29,13 @@ fn exists_user_name(user_name: String) -> bool {
     false
 }
 
+todo!(
+    유저 네임 중복시 Panic
+    나의 주소 address 확인
+    나의 코인 보유량 확인
+    나의 포인트 확인
+    내가 올린 코인 확인
+);
 
 #[cfg(test)]
 mod tests {
