@@ -66,7 +66,7 @@ PRIMARY KEY (wallet_address)
 CREATE TABLE COINS (
 coin_address varchar(36) NOT NULL,
 wallet_address varchar(36) NOT NULL,
-PRIMARY KEY ( coin_id )
+PRIMARY KEY ( coin_address )
 );
 
 CREATE TABLE CONTRACTS (

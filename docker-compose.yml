@@ -1,16 +1,16 @@
 version: '3'
 services:
-  mariadb:
-    container_name: mariadb
-    image: mariadb:10.9.2
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
     restart: always
     ports:
       - "3306:3306"
     environment:
-      - "MARIADB_DATABASE=VCTG"
-      - "MARIADB_USER=user"
-      - "MARIADB_PASSWORD=password"
-      - "MARIADB_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=VCTG"
+      - "MYSQL_USER=user"
+      - "MYSQL_PASSWORD=password"
+      - "MYSQL_ROOT_PASSWORD=root"
       - "TZ=Asia/Seoul"
     command:
       - --character-set-server=utf8mb4
