@@ -12,27 +12,22 @@ const IP_ADDRESS: &str = "localhost:7878";
 
 pub fn listening_for_loop() {
     let listener = TcpListener::bind(IP_ADDRESS).unwrap();
-
     for stream in listener.incoming() {
-        println!("1. Main : listener.incoming()");
         let stream = stream.unwrap();
         handle_connection(stream);
-        println!("4. Main : after handle_client");
     }
 }
 
 pub fn handle_connection(mut stream: TcpStream) {
-    println!("2. Begin handle_client");
     let mut readBuffer = [0; 512];
 
     stream.read(&mut readBuffer).unwrap();
-    println!("Request: {}", String::from_utf8_lossy(&readBuffer[..]));
+    // println!("Request: {}", String::from_utf8_lossy(&readBuffer[..]));
 
     let readBufferStr = std::str::from_utf8(&readBuffer[..]).unwrap();
     let mut splited = readBufferStr.split("|");
 
     handle_request(stream, splited.next().unwrap(), splited.next().unwrap());
-    println!("3. End handle_client");
 }
 
 pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str){
@@ -43,6 +38,7 @@ pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str){
 
     match route {
         "register" => {
+            register_user_db(user_name);
             let writeBuffer = b"OK|register done|\r\n";
             stream.write(writeBuffer);
         },
