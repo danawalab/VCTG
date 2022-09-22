@@ -70,25 +70,7 @@ pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str) {
     }
 }
 
-//
-// pub fn connect_to_db(){
-//     let url = "mysql://root:root@localhost:3306/test_db";
-//     let pool = Pool::new(url).expect("연결 실패");
-//
-//     let mut conn = pool.get_conn().expect("커넥션 가져오기 실패");
-//
-//     let mut result = conn.query_iter("SELECT * from USERS LIMIT 10")
-//         .expect("select 조회 실패");
-//
-//     while let Some(result_set) = result.iter() {
-//         println!("Result set columns: {:?}", result_set.columns());
-//     }
-//
-//     println!("연결 되었습니다.");
-// }
-//
 pub fn register_user_db(user_name: &str) {
-    println!("Register {}", user_name);
     let mut dao = DataAccessStruct {
         id: String::from("user"),
         password: String::from("password"),
@@ -96,17 +78,25 @@ pub fn register_user_db(user_name: &str) {
         port: String::from("3306"),
         database: String::from("VCTG"),
     };
-
     let mut conn = dao.do_connect();
+
     let user = User::new(user_name.to_string());
-    let mut query = String::from("INSERT INTO USERS(user_name, point, wallet_address) VALUES ('");
+    let mut user_query = String::from("INSERT INTO USERS(user_name, point, wallet_address) VALUES ('");
 
-    query.push_str(user_name);
-    query.push_str("', 100, '");
-    query.push_str(user.wallet_address.as_str());
-    query.push_str("');");
+    user_query.push_str(user_name);
+    user_query.push_str("', 100, '");
+    user_query.push_str(user.wallet_address.as_str());
+    user_query.push_str("');");
 
-    let vector = dao.query(&mut conn, query.as_str());
+    let mut wallet_query = String::from("INSERT INTO WALLETS(wallet_address, user_id) VALUES('");
+
+    wallet_query.push_str(user.wallet_address.as_str());
+    wallet_query.push_str("', ");
+    wallet_query.push_str(user.user_id.to_string().as_str());
+    wallet_query.push_str(");");
+
+    let vector = dao.query(&mut conn, user_query.as_str());
+    dao.query(&mut conn, wallet_query.as_str());
 
     for row in vector {
         println!("{} {} {} {}", row.0, row.1, row.2, row.3);

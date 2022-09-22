@@ -1,5 +1,12 @@
+use mysql::{from_row, from_value, Value};
+
+use crate::database::database::DataAccessStruct;
 use crate::structs::wallet::Wallet;
 
+/// User 구조체
+/// user 생성시 wallet도 같이 생성 wallet에 user_id를 넣어주기 위해 user_id 사용
+/// user_id는 ORM이 아니라 직접 User가 생성시 +1 해준다
+/// user_id를 순차 증가를 위해서 unsafe 사용
 pub struct User {
     pub user_id: i32,
     pub user_name: String,
@@ -7,16 +14,17 @@ pub struct User {
     pub wallet_address: String,
 }
 
-static mut USER_ID:i32 = 0;
+static mut USER_ID: i32 = 0;
 
 impl User {
     pub fn new(user_name: String) -> User {
+        // exists_user_name(&user_name); // panic 발생함
         unsafe { USER_ID = USER_ID + 1; }
         let wallet_address = Wallet::new(unsafe { USER_ID });
         unsafe {
             User {
                 user_id: USER_ID,
-                user_name,
+                user_name: user_name,
                 point: 100,
                 wallet_address,
             }
@@ -24,8 +32,24 @@ impl User {
     }
 }
 
-fn exists_user_name(user_name: String) -> bool {
-    false
+/// 이름 중복 검사
+fn exists_user_name(user_name: &str) -> bool {
+    let mut dao = DataAccessStruct {
+        id: String::from("user"),
+        password: String::from("password"),
+        host: String::from("localhost"),
+        port: String::from("3306"),
+        database: String::from("VCTG"),
+    };
+    let mut conn = dao.do_connect();
+
+    let mut query: String = String::from("SELECT COUNT(user_name) FROM USERS WHERE user_name = '");
+    query.push_str(user_name);
+    query.push_str("';");
+
+    dao.query(&mut conn, query.as_str());
+
+    true
 }
 
 #[cfg(test)]

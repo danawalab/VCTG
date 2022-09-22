@@ -1,5 +1,3 @@
-// mod database {
-
 use mysql::{from_row, Pool, PooledConn, QueryResult, Text};
 use mysql::prelude::Queryable;
 
@@ -42,4 +40,3 @@ impl DataAccessStruct {
         return v;
     }
 }
-// }
