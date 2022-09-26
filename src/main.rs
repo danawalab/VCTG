@@ -28,13 +28,13 @@ pub fn handle_connection(mut stream: TcpStream) {
     let readBufferStr = std::str::from_utf8(&readBuffer[..]).unwrap();
     let mut splited = readBufferStr.split("|");
 
-    handle_request(stream, splited.next().unwrap(), splited.next().unwrap());
+    handle_request(stream, splited.next().unwrap(), splited.next().unwrap(), splited.next().unwrap());
 }
 
-pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str) {
+pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str, option: &str) {
     // return 값은 OK 혹은 FAIL로만 준다
     // 각 값은 |로 구분 한다
-    println!("route: {} / arg: {}", route, user_name);
+    println!("route: {} | arg: {} | option: {}", route, user_name, option);
 
     match route {
         "register" => {
@@ -48,19 +48,23 @@ pub fn handle_request(mut stream: TcpStream, route: &str, user_name: &str) {
         }
 
         "wallet" => {
-            let writeBuffer = b"OK|wallet info returned|\r\n";
+            let str = format!("OK|wallet info|{}|", "This is your wallet info");
+            let writeBuffer = str.as_bytes();
             stream.write(writeBuffer);
         }
         "mining" => {
-            let writeBuffer = b"OK|mining done|\r\n";
+            let str = format!("OK|mining info|{}|", "This is your mining info");
+            let writeBuffer = str.as_bytes();
             stream.write(writeBuffer);
         }
         "sell" => {
-            let writeBuffer = b"OK|selling done|\r\n";
+            let str = format!("OK|selling info|{}|", "This is your selling info");
+            let writeBuffer = str.as_bytes();
             stream.write(writeBuffer);
         }
         "buy" => {
-            let writeBuffer = b"OK|buying done|\r\n";
+            let str = format!("OK|buying info|{}|", "This is your buying info");
+            let writeBuffer = str.as_bytes();
             stream.write(writeBuffer);
         }
         _ => {
@@ -114,6 +118,7 @@ pub fn register_user_db(user_name: &str) {
         println!("{} {} {} {}", row.0, row.1, row.2, row.3);
     }
 }
+
 
 
 fn main() {
