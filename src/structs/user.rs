@@ -32,26 +32,6 @@ impl User {
     }
 }
 
-/// 이름 중복 검사
-fn exists_user_name(user_name: &str) -> bool {
-    let mut dao = DataAccessStruct {
-        id: String::from("user"),
-        password: String::from("password"),
-        host: String::from("localhost"),
-        port: String::from("3306"),
-        database: String::from("VCTG"),
-    };
-    let mut conn = dao.do_connect();
-
-    let mut query: String = String::from("SELECT COUNT(user_name) FROM USERS WHERE user_name = '");
-    query.push_str(user_name);
-    query.push_str("';");
-
-    dao.query(&mut conn, query.as_str());
-
-    true
-}
-
 #[cfg(test)]
 mod tests {
     use crate::structs::user::User;

@@ -80,6 +80,15 @@ pub fn register_user_db(user_name: &str) {
     };
     let mut conn = dao.do_connect();
 
+    let mut exists_user_name_query: String = String::from("SELECT EXISTS(SELECT user_name FROM USERS) FROM USERS WHERE user_name = '");
+    exists_user_name_query.push_str(user_name.trim());
+    exists_user_name_query.push_str("';");
+    println!("{}", exists_user_name_query);
+
+    let is_exists = dao.query(&mut conn, exists_user_name_query.as_str());
+
+    println!("{:?}", is_exists);
+
     let user = User::new(user_name.to_string());
     let mut user_query = String::from("INSERT INTO USERS(user_name, point, wallet_address) VALUES ('");
 
@@ -88,6 +97,8 @@ pub fn register_user_db(user_name: &str) {
     user_query.push_str(user.wallet_address.as_str());
     user_query.push_str("');");
 
+    println!("{}", user_query);
+
     let mut wallet_query = String::from("INSERT INTO WALLETS(wallet_address, user_id) VALUES('");
 
     wallet_query.push_str(user.wallet_address.as_str());
@@ -95,6 +106,7 @@ pub fn register_user_db(user_name: &str) {
     wallet_query.push_str(user.user_id.to_string().as_str());
     wallet_query.push_str(");");
 
+    println!("{}", wallet_query);
     let vector = dao.query(&mut conn, user_query.as_str());
     dao.query(&mut conn, wallet_query.as_str());
 
