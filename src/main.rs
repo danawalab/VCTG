@@ -83,7 +83,7 @@ pub fn register_user_db(user_name: &str) {
     let user = User::new(user_name.to_string());
     let mut user_query = String::from("INSERT INTO USERS(user_name, point, wallet_address) VALUES ('");
 
-    user_query.push_str(user_name);
+    user_query.push_str(user_name.trim());
     user_query.push_str("', 100, '");
     user_query.push_str(user.wallet_address.as_str());
     user_query.push_str("');");
