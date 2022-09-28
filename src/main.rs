@@ -90,27 +90,23 @@ pub fn register_user_db(user_name: &str) {
     println!("{}", exists_user_name_query);
 
     let is_exists = dao.query(&mut conn, exists_user_name_query.as_str());
-
     println!("{:?}", is_exists);
 
     let user = User::new(user_name.to_string());
     let mut user_query = String::from("INSERT INTO USERS(user_name, point, wallet_address) VALUES ('");
-
     user_query.push_str(user_name.trim());
     user_query.push_str("', 100, '");
     user_query.push_str(user.wallet_address.as_str());
     user_query.push_str("');");
-
     println!("{}", user_query);
 
     let mut wallet_query = String::from("INSERT INTO WALLETS(wallet_address, user_id) VALUES('");
-
     wallet_query.push_str(user.wallet_address.as_str());
     wallet_query.push_str("', ");
     wallet_query.push_str(user.user_id.to_string().as_str());
     wallet_query.push_str(");");
-
     println!("{}", wallet_query);
+
     let vector = dao.query(&mut conn, user_query.as_str());
     dao.query(&mut conn, wallet_query.as_str());
 
@@ -119,6 +115,28 @@ pub fn register_user_db(user_name: &str) {
     }
 }
 
+pub fn check_wallet(user_id: i8) -> String {
+    let mut dao = DataAccessStruct {
+        id: String::from("user"),
+        password: String::from("password"),
+        host: String::from("localhost"),
+        port: String::from("3306"),
+        database: String::from("VCTG"),
+    };
+    let mut conn = dao.do_connect();
+
+    let mut select_wallet_query: String = String::from("SELECT wallet_address FROM WALLETS WHERE user_id = ");
+    select_wallet_query.push_str(user_id.to_string().as_str().trim());
+    select_wallet_query.push_str(";");
+
+    let vector = dao.query(&mut conn, select_wallet_query.as_str());
+
+    for row in vector {
+        println!("{} {} {} {}", row.0, row.1, row.2, row.3);
+    }
+
+    "ads".to_string()
+}
 
 
 fn main() {
