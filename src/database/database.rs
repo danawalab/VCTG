@@ -33,10 +33,10 @@ impl DataAccessStruct {
     pub fn query(&self, conn: &mut PooledConn, query: &str) -> Vec<(i32, String, i32, String)> {
         let mut v = Vec::new();
         conn.query_iter(query).unwrap().for_each(|row| {
-                let r:(i32, String, i32, String) = from_row(row.unwrap());
-                v.push(r.clone());
-                println!("{}, {}, {}, {}", r.0, r.1, r.2, r.3);
-            });
+            let r:(i32, String, i32, String) = from_row(row.unwrap());
+            v.push(r.clone());
+            println!("{}, {}, {}, {}", r.0, r.1, r.2, r.3);
+        });
         return v;
     }
 }

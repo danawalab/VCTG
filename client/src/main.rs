@@ -12,7 +12,7 @@ fn return_user_input() -> String {
     io::stdin().read_line(&mut input)
         .expect("Failed to read line");
 
-    input
+    input.trim().to_string()
 }
 
 fn send_wait_response(mut stream: TcpStream, mut str: &str) {
@@ -48,7 +48,6 @@ fn main() -> std::io::Result<()> {
             print!("Enter ID : ");
 
             user_name = return_user_input();
-            user_name = user_name.trim().to_string();
             let str = format!("register|{}|{}|", user_name, "void");
 
             send_wait_response(stream, &str);
@@ -61,7 +60,6 @@ fn main() -> std::io::Result<()> {
             print!("Enter ID : ");
 
             user_name = return_user_input();
-            user_name = user_name.trim().to_string();
             let str = format!("signin|{}|{}|", user_name, "void");
 
             send_wait_response(stream, &str);
@@ -116,7 +114,6 @@ fn main() -> std::io::Result<()> {
 
             print!("Enter Coin Amount : ");
             let mut coin_amount = return_user_input();
-            coin_amount = coin_amount.trim().to_string();
 
             let str = format!("sell|{}|{}|", user_name, coin_amount);
             send_wait_response(stream, &str);
@@ -127,7 +124,6 @@ fn main() -> std::io::Result<()> {
 
             print!("Enter Coin Amount : ");
             let mut coin_amount = return_user_input();
-            coin_amount = coin_amount.trim().to_string();
 
             let str = format!("buy|{}|{}|", user_name, coin_amount);
             send_wait_response(stream, &str);
